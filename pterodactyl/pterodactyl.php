@@ -258,7 +258,7 @@ function random($length) {
     }
 }
 
-function pterodactyl_GenerateUsername($length = 8) {
+function pterodactyl_GenerateServerName($length = 6) {
     $returnable = false;
     while (!$returnable) {
         $generated = random($length);
@@ -310,7 +310,7 @@ function pterodactyl_CreateAccount(array $params) {
             $userResult = pterodactyl_API($params, 'users?filter[email]=' . urlencode($params['clientsdetails']['email']));
             if($userResult['meta']['pagination']['total'] === 0) {
                 $userResult = pterodactyl_API($params, 'users', [
-                    'username' => pterodactyl_GetOption($params, 'username', pterodactyl_GenerateUsername()),
+		    'username' => $params['clientdetails']['firstname'],
                     'email' => $params['clientsdetails']['email'],
                     'first_name' => $params['clientsdetails']['firstname'],
                     'last_name' => $params['clientsdetails']['lastname'],
@@ -352,7 +352,7 @@ function pterodactyl_CreateAccount(array $params) {
             else $environment[$var] = $default;
         }
 
-        $name = pterodactyl_GetOption($params, 'server_name', pterodactyl_GenerateUsername() . '_' . $params['serviceid']);
+        $name = pterodactyl_GetOption($params, 'server_name', pterodactyl_GenerateServerName() . '_' . $params['serviceid']);
         $memory = pterodactyl_GetOption($params, 'memory');
         $swap = pterodactyl_GetOption($params, 'swap');
         $io = pterodactyl_GetOption($params, 'io');
